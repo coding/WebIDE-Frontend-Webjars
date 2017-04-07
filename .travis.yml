@@ -1,25 +1,25 @@
 sudo: required
-
 language: generic
-
 services:
 - docker
-
 env:
   global:
   - secure: cf1UZFSfaPjz9aQ+M8u+6yfZk81DWZoTzmIT9UxCZmwZH8kkb9zADjnLONaOB6jMk6Meyxau76ZACKL8szNd7BcOsL0M5nBpBoUIVc+Lbe+g02TFsm956yfk5FISbK7AUC/Qblhw9jQeyT7qFyeyh711/f3C+jwXFB9P9uxK2PjsUpz0BeQH6ld/wnappNQla3IDM+vLaHv1CmH2y9sLl3WDhs9jVHPUPhzeklgojibvHXRe2wcdytlII4Vh79+kDKCUUncNkPNFqrcY4ISluRGIchTsjy9AR2/MezbS3T3Ei6w4CqTlIT3hRr6B7mQrdXx4rTCKKucafFB2KcFp9cBcqeWZ++B/u/tXyb49nGcuNxQz2zoY0u3Ba5TLelwbQLH8X55meVeJLrDShOTX+PHiNK070o7luz8LDqE1O6WCD3Ne+GcOv1B2uaPT3TkNUNxt82rSaDHwHQWa9/2foELglo+W/ca6SmZb10McyJSaZn50XIquy0g/oMNhkvqTQVYklY5ztbKMqv4hXtiA+Rq1RMWJxDs9OkgQWafPmrTJOO8djf7rEhexfJuVVaOBOFzQZCjv0F+/DqP+E6YpZp2whvjga+/1mp/Nno7UIutJs8GLNONdA4un/EHky0U2BlD6NTH/DePKZWImwzYQSQdGK2xsnA2XH9QM6ZvMWBk=
   - secure: FEjVU4qL2PBa0LKBGrIRxrWwqplBIf1HbOI+asD6C+woCfdvn2Hv58W339qTGCtHszJYUhLKfPx1Q9c8MriF1PZ4OWFqCI7LHz20IwfDGFXV+nN/WIjRrJWLWLbb2co2gY0mAd22+3ZWKJsqKueum0aKYv3Ba5jwiIfbvEFVG39cLDhVxfxIBmn7AtCEjsdOaDUhbuwde+SBLfC+Zc2IM7PlcAio9ZqGCveKE4Kz1pjcgsWG/kTckNow/zY4o8laOY8OUGFp+wTWQY4EGp9vc6dwQKankrUKhpU3hU261aoyOToZiGvqQCXuNiaAev3SgScLmkIkoSacr03W3xXuQ8ifocHZ8BaZD3fHCYyucORoDPr0s7ak/O8VEqCkasKK8yAD5WH4j9Klidl5dxjL23TCnqtrcHaDKz+5jF81ZONQkoBsFc/Q+4DT9TO01SnJ9uOQYs+FtNNg6GmoskdDFbTAGnC36Q9eb6ofJ+Z37PmfCPqCv36PPOIkaDwpVMdw817bOT/uJs9pgP64Ko8HsdfEHxZp0SZv5qRPUPE/XtoCzIv4cx3Htu1uoxVPDW+YY8gZfQIT8zVR44NqTyJ0DYgx+VZ1DO2bVxMu+2mn8m7aZ/eCHTD8WX7AnbL3GPTVrdvTzGkbAERAIOwFtCq9GPp9Xdc3rtzbg5eN4esWd1w=
   - COMMIT=${TRAVIS_COMMIT::8}
-
 before_install:
-  - sudo apt-get update
-  - sudo apt-get -y -o Dpkg::Options::="--force-confnew" install docker-engine
-
+- sudo apt-get update
+- sudo apt-get -y -o Dpkg::Options::="--force-confnew" install docker-engine
 script:
-  - docker login -u $DOCKER_USER -p $DOCKER_PASS
-  - export REPO=webide/webjars-builder
-  - export TAG=`if [ "$TRAVIS_BRANCH" == "master" ]; then echo "latest"; else echo $TRAVIS_BRANCH ; fi`
-  - docker build -f Dockerfile -t $REPO:$COMMIT .
-  - docker tag $REPO:$COMMIT $REPO:$TAG
-  - docker tag $REPO:$COMMIT $REPO:travis-$TRAVIS_BUILD_NUMBER
-  - docker push $REPO
+- docker login -u $DOCKER_USER -p $DOCKER_PASS
+- export REPO=webide/webjars-builder
+- export TAG=`if [ "$TRAVIS_BRANCH" == "master" ]; then echo "latest"; else echo $TRAVIS_BRANCH
+  ; fi`
+- docker build -f Dockerfile -t $REPO:$COMMIT .
+- docker tag $REPO:$COMMIT $REPO:$TAG
+- docker tag $REPO:$COMMIT $REPO:travis-$TRAVIS_BUILD_NUMBER
+- docker push $REPO
+notifications:
+  slack:
+    secure: jmFZUO8jMKvgvToYh+3Vs5CDIRukUBPEPSRbbqFSuGZu2L7KJUcglsVc0H1HBuZXv9InXgcZt+AN5n2I0sD0xyVxa6RIS5otRmm7jT03cV8/Wv5ppk4GqIpysEbnuZ1KmkRyHPbfFd7hHld25mbRlc6msRryhSqymyR7vh3zrxrLh+4CBVrWVFOptDGiERRtaEkq9gME3SGhVB34zWBMW9UKcInY1Dk13MzluK5zrmkAmqerh8woGf8U4VkW2JX6S0+9xe1VA89GdA0qPTkwukbd9unv4Oj3zMUir87V3q/5tPr+TnPVRhBJmeCv94+93vkSIkVFNYptO7tNfguh+1XrwrPhnvZLk3M89bSGtFwjyR+iFM5vqHF3al/ljSutyzvTK7HCZTk+ySpr+UUoaoZUoZouLhwhrXsZWtnGFZUsZCiFtfR+wqTTqL7c1pW0drzy8kfEcyGKrLJuxyK3VCJ5vrH4u/WI75B1NdQQ5spqV0mC0SHnB5Zli1aHVLXBxjl0NvOTzbzROST+Dp/IwpZ/R3Oed31YUyKDb0duaN/WEG9TSV4gww2dPrmVTz7j2++9JssodFo1kdc4ZJYdTLCEp75vU7sejxkbo/w94SrFnYxPmQ8nMzmdQdqF8obeFqfC0C8NgTTQp2PnHqieVlyoJO2QhSPwlBm6TSoychU=
+    on_failure: always
