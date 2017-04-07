@@ -11,7 +11,7 @@
     <packaging>jar</packaging>
     <groupId>net.coding.ide</groupId>
     <artifactId>frontend</artifactId>
-    <version>1.0.0</version>
+    <version>${version}</version>
     <name>WebIDE Frontend</name>
     <description>WebJar for WebIDE Frontend</description>
     <url>https://coding.net</url>
@@ -97,5 +97,17 @@
             </plugin>
         </plugins>
     </build>
+
+    <profiles>
+      <profile>
+        <id>default</id>
+        <properties>
+            <version>1.0.0</version>
+        </properties>
+        <activation>
+            <activeByDefault>true</activeByDefault>
+        </activation>
+      </profile>
+    </profiles>
 
 </project>
